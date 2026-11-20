@@ -39,13 +39,16 @@ const unionScopes = (scopes) => {
   };
 };
 
+// ID baris students milik akun siswa (kolom student_id, fallback id lama).
+const studentIdOf = (user) => user.student_id || user.id;
+
 // Klausa pada tabel students (kolom id/class).
 function studentScope(user) {
   const roles = getRoles(user);
   if (hasFullAccess(user)) return { sql: '1 = 1', params: [] };
 
   const scopes = [];
-  if (roles.includes('siswa')) scopes.push({ sql: 'id = ?', params: [user.id] });
+  if (roles.includes('siswa')) scopes.push({ sql: 'id = ?', params: [studentIdOf(user)] });
   if (roles.includes('orang_tua')) {
     scopes.push({
       sql: 'id IN (SELECT student_id FROM parent_students WHERE parent_id = ?)',
@@ -70,7 +73,7 @@ function gradeScope(user) {
   if (hasFullAccess(user)) return { sql: '1 = 1', params: [] };
 
   const scopes = [];
-  if (roles.includes('siswa')) scopes.push({ sql: 'student_id = ?', params: [user.id] });
+  if (roles.includes('siswa')) scopes.push({ sql: 'student_id = ?', params: [studentIdOf(user)] });
   if (roles.includes('orang_tua')) {
     scopes.push({
       sql: 'student_id IN (SELECT student_id FROM parent_students WHERE parent_id = ?)',
@@ -95,7 +98,7 @@ function attendanceScope(user) {
   if (hasFullAccess(user)) return { sql: '1 = 1', params: [] };
 
   const scopes = [];
-  if (roles.includes('siswa')) scopes.push({ sql: 'student_id = ?', params: [user.id] });
+  if (roles.includes('siswa')) scopes.push({ sql: 'student_id = ?', params: [studentIdOf(user)] });
   if (roles.includes('orang_tua')) {
     scopes.push({
       sql: 'student_id IN (SELECT student_id FROM parent_students WHERE parent_id = ?)',
@@ -122,7 +125,7 @@ function billingScope(user) {
   if (hasFullAccess(user)) return { sql: '1 = 1', params: [] };
 
   const scopes = [];
-  if (roles.includes('siswa')) scopes.push({ sql: 'student_id = ?', params: [user.id] });
+  if (roles.includes('siswa')) scopes.push({ sql: 'student_id = ?', params: [studentIdOf(user)] });
   if (roles.includes('orang_tua')) {
     scopes.push({
       sql: 'student_id IN (SELECT student_id FROM parent_students WHERE parent_id = ?)',
@@ -160,6 +163,16 @@ function canManageSubject(user, subject) {
   return !!db.prepare('SELECT 1 FROM teacher_assignments WHERE teacher_id = ? AND subject = ?').get(user.id, subject);
 }
 
+// Guru boleh mengajar jadwal bila tertaut langsung atau mengampu kelas+mapel.
+function canTeachSchedule(user, schedule) {
+  if (hasFullAccess(user)) return true;
+  if (schedule.teacher_id && schedule.teacher_id === user.id) return true;
+  if (schedule.teacher && schedule.teacher === user.name) return true;
+  return !!db
+    .prepare('SELECT 1 FROM teacher_assignments WHERE teacher_id = ? AND class = ? AND subject = ?')
+    .get(user.id, schedule.class, schedule.subject);
+}
+
 // Orang tua hanya boleh mengunggah bukti untuk tagihan anaknya.
 function isChildOf(user, studentId) {
   return !!db.prepare('SELECT 1 FROM parent_students WHERE parent_id = ? AND student_id = ?').get(user.id, studentId);
@@ -171,11 +184,13 @@ module.exports = {
   hasAnyRole,
   isTeacher,
   hasFullAccess,
+  studentIdOf,
   studentScope,
   gradeScope,
   attendanceScope,
   billingScope,
   canManageStudent,
   canManageSubject,
+  canTeachSchedule,
   isChildOf
 };

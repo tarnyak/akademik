@@ -17,24 +17,42 @@ export interface User {
   role: UserRole
   roles?: UserRole[]
   avatar?: string
+  student_id?: string | null
+  class?: string | null
 }
 
 export interface Student {
   id: string
   name: string
   niup: string
+  nisn: string
   class: string
   status: 'siswa aktif' | 'siswa berhenti' | 'siswa lulus'
   gender: 'L' | 'P'
+  tgl_lahir: string
+  tmp_lahir: string
+  provinsi: string
+  kabupaten: string
+  kecamatan: string
+  negara: string
+  foto_siswa: string
 }
 
 export interface Teacher {
   id: string
   name: string
   niup: string
+  nip?: string
   gender: 'L' | 'P'
+  pangkat?: string
+  pendidikan?: string
   subjects: string[]
   classes: string[]
+  foto_guru?: string
+  provinsi?: string
+  kabupaten?: string
+  kecamatan?: string
+  negara?: string
 }
 
 export interface Announcement {
@@ -70,7 +88,9 @@ export interface Schedule {
   time: string
   subject: string
   teacher: string
+  teacherId?: string | null
   room: string
+  day: string
 }
 
 export type BillingStatus = 'requested' | 'pending_verification' | 'paid' | 'rejected'
@@ -114,4 +134,73 @@ export interface Prestasi {
   juara: string
   event: string
   tahun: string
+}
+
+export interface DashboardSummary {
+  generatedAt: string
+  audience: 'admin' | 'supervisor' | 'tu' | 'teacher' | 'personal'
+  fullAccess: boolean
+  counts: {
+    students: number
+    teachers: number | null
+    classes: number
+  }
+  attendance: {
+    referenceDate: string
+    isToday: boolean
+    today: {
+      total: number
+      hadir: number
+      izin: number
+      alfa: number
+      percentage: number
+    }
+    trend: Array<{
+      date: string
+      hadir: number
+      izin: number
+      alfa: number
+      total: number
+    }>
+  }
+  students: {
+    byLevel: Array<{ label: string; count: number }>
+    byMajor: Array<{ label: string; count: number }>
+    byGender: Array<{ label: string; count: number }>
+  }
+  grades: {
+    average: number
+    total: number
+    bySubject: Array<{ subject: string; average: number; count: number }>
+    distribution: Array<{ label: string; count: number }>
+  }
+  billing: {
+    total: number
+    paid: number
+    unpaid: number
+    amountTotal: number
+    amountPaid: number
+    amountOutstanding: number
+    byStatus: Array<{ status: string; label: string; count: number; amount: number }>
+    monthly: Array<{ period: string; total: number; paid: number }>
+  }
+  topClasses: Array<{ class: string; total: number; hadir: number; rate: number }>
+  topStudents: Array<{ name: string; class: string; average: number }>
+  teaching?: {
+    date: string
+    total: number
+    submitted: number
+    pending: number
+    missing: number
+    slots: Array<{
+      id: string
+      time: string
+      class: string
+      subject: string
+      room: string
+      filled: number
+      total: number
+      status: 'locked' | 'complete' | 'partial' | 'empty'
+    }>
+  } | null
 }

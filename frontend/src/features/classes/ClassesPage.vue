@@ -6,16 +6,19 @@
         <h1 class="text-xl font-bold text-slate-900 tracking-tight">Manajemen Kelas</h1>
         <p class="text-sm text-slate-500 mt-0.5">Kelola klaster kelas dan program keahlian siswa.</p>
       </div>
-      <Button v-if="canEdit" variant="primary" @click="openAddModal">
-        <svg class="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
-        </svg>
-        Tambah Kelas
-      </Button>
+      <div class="flex gap-2">
+        <Button v-if="canEdit" variant="primary" @click="openAddModal">
+          <svg class="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+          </svg>
+          Tambah Kelas
+        </Button>
+        <Button v-if="canExport" variant="outline" class="no-print" @click="exportClasses">Ekspor CSV</Button>
+      </div>
     </div>
 
     <!-- Filters Bar -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 sm:gap-6 items-end bg-white p-4 sm:p-6 rounded-card border border-slate-200/60 shadow-sm">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 sm:gap-6 items-end bg-panel p-4 sm:p-6 rounded-card border border-slate-200/60 shadow-sm">
       <div class="md:col-span-3">
         <Input
           v-model="searchQuery"
@@ -78,12 +81,12 @@
             </svg>
           </RouterLink>
           <div v-if="canEdit" class="flex gap-1">
-            <button @click="openEditModal(cls)" class="p-2 text-slate-400 hover:text-indigo-600 rounded hover:bg-white transition-all">
+            <button @click="openEditModal(cls)" class="p-2 text-slate-400 hover:text-indigo-600 rounded hover:bg-panel transition-all">
               <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
               </svg>
             </button>
-            <button @click="deleteClass(cls.id)" class="p-2 text-slate-400 hover:text-rose-500 rounded hover:bg-white transition-all">
+            <button @click="deleteClass(cls.id)" class="p-2 text-slate-400 hover:text-rose-500 rounded hover:bg-panel transition-all">
               <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
@@ -157,12 +160,22 @@ import Button from '../../components/ui/Button.vue'
 import Modal from '../../components/ui/Modal.vue'
 import Input from '../../components/ui/Input.vue'
 import { useAuthStore } from '../../stores/auth'
+import { compareClassNames } from '../../utils/classes'
+import { useExport } from '../../composables/useExport'
 
 const studentStore = useStudentStore()
 const teacherStore = useTeacherStore()
 const authStore = useAuthStore()
 
 const canEdit = computed(() => authStore.hasAnyRole(['admin', 'kepala_tu', 'staff_tu']))
+const canExport = computed(() => canEdit.value || authStore.hasAnyRole(['kepala_sekolah', 'waka']))
+
+const { exportToCsv } = useExport()
+const exportClasses = () => {
+  const headers = ['Nama Kelas', 'Jurusan', 'Wali Kelas', 'Kapasitas']
+  const rows = filteredClasses.value.map((c) => [c.name, c.major, c.teacher, c.capacity])
+  exportToCsv(headers, rows, 'ekspor-kelas')
+}
 const classes = ref<Class[]>([])
 const searchQuery = ref('')
 const filterMajor = ref('')
@@ -171,12 +184,12 @@ const editingClass = ref<Class | null>(null)
 
 const filteredClasses = computed(() => {
   return classes.value.filter(cls => {
-    const matchesSearch = !searchQuery.value || 
+    const matchesSearch = !searchQuery.value ||
       cls.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       cls.teacher.toLowerCase().includes(searchQuery.value.toLowerCase())
     const matchesMajor = !filterMajor.value || cls.major === filterMajor.value
     return matchesSearch && matchesMajor
-  })
+  }).sort((a, b) => compareClassNames(a.name, b.name))
 })
 
 const formData = reactive({

@@ -33,6 +33,12 @@ pnpm-debug.log*
 *.db-shm
 *.db-wal
 *.db-*
+backend/uploads/
+
+# Artefak agen / audit lokal
+.agent-teams/
+security-audit/
+devserver.log
 
 # IDE and editor files
 .vscode/

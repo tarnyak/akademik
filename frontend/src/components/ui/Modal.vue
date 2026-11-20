@@ -3,11 +3,11 @@
     <Transition name="modal">
       <div v-if="isOpen" class="fixed inset-0 z-[100] overflow-y-auto">
         <!-- Backdrop -->
-        <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" @click="$emit('close')"></div>
+        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity" @click="$emit('close')"></div>
 
         <!-- Modal Container -->
         <div class="flex min-h-full items-center justify-center p-4">
-          <div role="dialog" aria-modal="true" :aria-labelledby="titleId" class="relative bg-white rounded-modal shadow-elevated w-full max-w-lg overflow-hidden transform transition-all border border-slate-200">
+          <div role="dialog" aria-modal="true" :aria-labelledby="titleId" class="relative bg-panel rounded-modal shadow-elevated w-full overflow-hidden transform transition-all border border-line" :class="sizeClass">
             <!-- Header -->
             <div class="px-4 sm:px-6 py-4 border-b border-slate-100 flex items-center justify-between gap-3">
               <div class="min-w-0">
@@ -29,7 +29,7 @@
             <!-- Footer -->
             <div class="px-4 sm:px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-3">
               <Button variant="secondary" @click="$emit('close')">{{ cancelText }}</Button>
-              <Button variant="primary" @click="$emit('confirm')">{{ confirmText }}</Button>
+              <Button v-if="!hideConfirm" variant="primary" @click="$emit('confirm')">{{ confirmText }}</Button>
             </div>
           </div>
         </div>
@@ -39,6 +39,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import Button from './Button.vue'
 
 interface Props {
@@ -47,16 +48,21 @@ interface Props {
   subtitle?: string
   confirmText?: string
   cancelText?: string
+  hideConfirm?: boolean
+  size?: 'md' | 'lg'
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   isOpen: false,
   confirmText: 'Konfirmasi',
-  cancelText: 'Batal'
+  cancelText: 'Batal',
+  hideConfirm: false,
+  size: 'md'
 })
 
 defineEmits(['close', 'confirm'])
 
+const sizeClass = computed(() => (props.size === 'lg' ? 'max-w-2xl' : 'max-w-lg'))
 const titleId = `modal-title-${Math.random().toString(36).substr(2, 9)}`
 </script>
 
