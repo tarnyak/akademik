@@ -144,7 +144,11 @@ const isMobileMenuOpen = ref(false)
  * modal/toast yang di-teleport ke body tetap ikut bertema.
  * Role lain tidak pernah menerima class ini sehingga tampilannya tetap.
  */
-const isOrtuTheme = computed(() => authStore.user?.role === 'orang_tua')
+const isOrtuTheme = computed(() => {
+  if (!authStore.user) return false
+  const userRoles = authStore.user.roles || [authStore.user.role].filter((r) => r)
+  return userRoles.includes('orang_tua')
+})
 
 watch(
   isOrtuTheme,
