@@ -1,0 +1,678 @@
+/* =========================================================================
+   ORTU DARK ELEGANT THEME
+   -------------------------------------------------------------------------
+   Tema ini HANYA aktif ketika root layout memiliki class `.ortu-theme`.
+   Class tersebut dipasang secara kondisional oleh AppLayout hanya untuk
+   user dengan role `orang_tua`.
+
+   Semua selector di bawah diawali `.ortu-theme` sehingga tidak akan pernah
+   mengenai role lain (admin, guru, siswa, dll). Tidak ada perubahan pada
+   body/html global, Tailwind config, atau komponen bersama. Class pada
+   <body> hanya dipasang sementara saat role orang_tua aktif (untuk modal
+   yang di-teleport), lalu dilepas saat logout.
+   ========================================================================= */
+
+.ortu-theme {
+  --ortu-bg: #0f1117;
+  --ortu-sidebar: #151922;
+  --ortu-card: #1c2230;
+  --ortu-elevated: #252c3a;
+  --ortu-border: #30394a;
+  --ortu-text: #f1f3f5;
+  --ortu-text-secondary: #a0a8b7;
+  --ortu-text-muted: #7f8898;
+  --ortu-accent: #c5a572;
+  --ortu-accent-strong: #d4b888;
+  --ortu-accent-soft: rgba(197, 165, 114, 0.12);
+  --ortu-hover: #30394a;
+  --ortu-success: #86c9ac;
+  --ortu-warning: #d6b26a;
+  --ortu-danger: #d98a91;
+  --ortu-info: #82b7d8;
+  --ortu-orange: #d69a6a;
+
+  color-scheme: dark;
+  scrollbar-color: var(--ortu-border) transparent;
+}
+
+/* Base surfaces ---------------------------------------------------------- */
+body.ortu-theme {
+  background-color: var(--ortu-bg);
+  color: var(--ortu-text);
+}
+
+.ortu-theme.ortu-theme {
+  background-color: var(--ortu-bg);
+  color: var(--ortu-text);
+}
+
+/* Sidebar & top bar ------------------------------------------------------ */
+.ortu-theme.ortu-theme aside {
+  background-color: var(--ortu-sidebar);
+  border-color: var(--ortu-border);
+}
+
+.ortu-theme.ortu-theme header {
+  background-color: var(--ortu-sidebar);
+  border-color: var(--ortu-border);
+}
+
+.ortu-theme aside .bg-slate-50\/50 {
+  background-color: rgba(15, 17, 23, 0.35);
+}
+
+/* Elegant active indicator on sidebar navigation */
+.ortu-theme aside nav a.bg-indigo-50 {
+  box-shadow: inset 2px 0 0 var(--ortu-accent);
+}
+
+/* Neutral surfaces ------------------------------------------------------- */
+.ortu-theme .bg-white {
+  background-color: var(--ortu-card);
+}
+
+.ortu-theme .bg-slate-50 {
+  background-color: var(--ortu-elevated);
+}
+
+.ortu-theme .bg-slate-50\/50 {
+  background-color: rgba(37, 44, 58, 0.55);
+}
+
+.ortu-theme .bg-slate-100 {
+  background-color: var(--ortu-elevated);
+}
+
+.ortu-theme .bg-slate-200 {
+  background-color: var(--ortu-border);
+}
+
+.ortu-theme .bg-slate-300 {
+  background-color: #3b4659;
+}
+
+.ortu-theme .bg-surface-50 {
+  background-color: #171c26;
+}
+
+.ortu-theme .bg-surface-100 {
+  background-color: var(--ortu-elevated);
+}
+
+.ortu-theme .bg-surface-100\/50 {
+  background-color: rgba(37, 44, 58, 0.55);
+}
+
+.ortu-theme .bg-surface-200\/60 {
+  background-color: rgba(48, 57, 74, 0.65);
+}
+
+/* Accent surfaces -------------------------------------------------------- */
+.ortu-theme .bg-indigo-50 {
+  background-color: var(--ortu-accent-soft);
+}
+
+.ortu-theme .bg-indigo-100 {
+  background-color: rgba(197, 165, 114, 0.18);
+}
+
+.ortu-theme .bg-indigo-500 {
+  background-color: var(--ortu-accent);
+}
+
+.ortu-theme .bg-indigo-600 {
+  background-color: var(--ortu-accent);
+  color: #12141a;
+}
+
+.ortu-theme .bg-brand-50 {
+  background-color: var(--ortu-accent-soft);
+}
+
+.ortu-theme .bg-brand-500 {
+  background-color: var(--ortu-accent);
+}
+
+.ortu-theme .bg-brand-600 {
+  background-color: var(--ortu-accent);
+}
+
+/* Dashboard "Butuh Bantuan" panel uses a div with .bg-indigo-600.
+   Render it as an elegant dark panel instead of a solid bright block. */
+.ortu-theme div.bg-indigo-600 {
+  background: linear-gradient(160deg, #1c2230 0%, #151922 100%);
+  border: 1px solid rgba(197, 165, 114, 0.28);
+  color: var(--ortu-text);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.ortu-theme div.bg-indigo-600 .bg-white {
+  background-color: var(--ortu-elevated);
+  color: var(--ortu-accent);
+}
+
+.ortu-theme div.bg-indigo-600 .hover\:bg-indigo-50:hover {
+  background-color: var(--ortu-hover);
+}
+
+/* Semantic status surfaces ---------------------------------------------- */
+.ortu-theme .bg-emerald-50 {
+  background-color: rgba(134, 201, 172, 0.12);
+}
+
+.ortu-theme .bg-amber-50 {
+  background-color: rgba(214, 178, 106, 0.12);
+}
+
+.ortu-theme .bg-rose-50 {
+  background-color: rgba(217, 138, 145, 0.12);
+}
+
+.ortu-theme .bg-sky-50 {
+  background-color: rgba(130, 183, 216, 0.12);
+}
+
+.ortu-theme .bg-orange-50 {
+  background-color: rgba(214, 154, 106, 0.12);
+}
+
+.ortu-theme .bg-blue-50 {
+  background-color: rgba(130, 160, 216, 0.12);
+}
+
+/* Attendance status selects use Tailwind `!` (important) utilities.
+   Override them with theme surfaces while keeping the semantic tint. */
+.ortu-theme .\!bg-emerald-50 {
+  background-color: rgba(134, 201, 172, 0.14) !important;
+}
+
+.ortu-theme .\!bg-amber-50 {
+  background-color: rgba(214, 178, 106, 0.14) !important;
+}
+
+.ortu-theme .\!bg-rose-50 {
+  background-color: rgba(217, 138, 145, 0.14) !important;
+}
+
+.ortu-theme .\!border-emerald-100 {
+  border-color: rgba(134, 201, 172, 0.3) !important;
+}
+
+.ortu-theme .\!border-amber-100 {
+  border-color: rgba(214, 178, 106, 0.3) !important;
+}
+
+.ortu-theme .\!border-rose-100 {
+  border-color: rgba(217, 138, 145, 0.3) !important;
+}
+
+.ortu-theme .bg-emerald-500 {
+  background-color: #6fae94;
+}
+
+.ortu-theme .bg-rose-600 {
+  background-color: #a9535b;
+}
+
+/* Hover surfaces --------------------------------------------------------- */
+.ortu-theme .hover\:bg-slate-50:hover,
+.ortu-theme .hover\:bg-slate-50\/50:hover,
+.ortu-theme .hover\:bg-slate-100:hover,
+.ortu-theme .hover\:bg-surface-50\/80:hover,
+.ortu-theme .hover\:bg-white:hover {
+  background-color: var(--ortu-hover);
+}
+
+.ortu-theme .hover\:bg-slate-200:hover {
+  background-color: #3b4659;
+}
+
+.ortu-theme .hover\:bg-indigo-50:hover,
+.ortu-theme .hover\:bg-indigo-50\/30:hover,
+.ortu-theme .hover\:bg-indigo-50\/50:hover,
+.ortu-theme .hover\:bg-brand-50:hover {
+  background-color: rgba(197, 165, 114, 0.14);
+}
+
+.ortu-theme .hover\:bg-indigo-700:hover {
+  background-color: var(--ortu-accent-strong);
+}
+
+.ortu-theme .hover\:bg-rose-50:hover {
+  background-color: rgba(217, 138, 145, 0.14);
+}
+
+.ortu-theme .hover\:bg-rose-700:hover {
+  background-color: #94474f;
+}
+
+/* Group hover accents (kept muted, never neon) */
+.ortu-theme .group:hover .group-hover\:bg-indigo-100 {
+  background-color: rgba(197, 165, 114, 0.2);
+}
+
+.ortu-theme .group:hover .group-hover\:bg-emerald-600 {
+  background-color: #3f7a66;
+}
+
+.ortu-theme .group:hover .group-hover\:bg-amber-600 {
+  background-color: #8a6c37;
+}
+
+.ortu-theme .group:hover .group-hover\:bg-rose-600 {
+  background-color: #8c4a52;
+}
+
+/* Typography ------------------------------------------------------------- */
+.ortu-theme .text-slate-900,
+.ortu-theme .text-surface-900 {
+  color: var(--ortu-text);
+}
+
+.ortu-theme .text-slate-700,
+.ortu-theme .text-surface-700 {
+  color: #d5dae2;
+}
+
+.ortu-theme .text-slate-600,
+.ortu-theme .text-surface-600 {
+  color: #c2c8d2;
+}
+
+.ortu-theme .text-slate-500,
+.ortu-theme .text-surface-500 {
+  color: var(--ortu-text-secondary);
+}
+
+.ortu-theme .text-slate-400,
+.ortu-theme .text-surface-400 {
+  color: var(--ortu-text-muted);
+}
+
+.ortu-theme .text-surface-300 {
+  color: #5f6878;
+}
+
+.ortu-theme .text-indigo-500,
+.ortu-theme .text-indigo-600,
+.ortu-theme .text-indigo-700,
+.ortu-theme .text-brand-600 {
+  color: var(--ortu-accent);
+}
+
+.ortu-theme .text-indigo-100,
+.ortu-theme .text-indigo-100\/80 {
+  color: var(--ortu-text-secondary);
+}
+
+.ortu-theme .text-emerald-500,
+.ortu-theme .text-emerald-600,
+.ortu-theme .text-emerald-700 {
+  color: var(--ortu-success);
+}
+
+.ortu-theme .text-amber-500,
+.ortu-theme .text-amber-600,
+.ortu-theme .text-amber-700 {
+  color: var(--ortu-warning);
+}
+
+.ortu-theme .text-rose-500,
+.ortu-theme .text-rose-600 {
+  color: var(--ortu-danger);
+}
+
+.ortu-theme .text-sky-600,
+.ortu-theme .text-blue-600 {
+  color: var(--ortu-info);
+}
+
+.ortu-theme .text-orange-600 {
+  color: var(--ortu-orange);
+}
+
+/* Hover / group-hover text */
+.ortu-theme .hover\:text-slate-900:hover {
+  color: var(--ortu-text);
+}
+
+.ortu-theme .hover\:text-slate-700:hover,
+.ortu-theme .hover\:text-slate-600:hover {
+  color: #d5dae2;
+}
+
+.ortu-theme .hover\:text-indigo-600:hover,
+.ortu-theme .hover\:text-indigo-700:hover,
+.ortu-theme .hover\:text-brand-600:hover {
+  color: var(--ortu-accent-strong);
+}
+
+.ortu-theme .hover\:text-rose-500:hover,
+.ortu-theme .hover\:text-rose-600:hover {
+  color: #e6a1a7;
+}
+
+.ortu-theme .group:hover .group-hover\:text-indigo-400,
+.ortu-theme .group:hover .group-hover\:text-indigo-600,
+.ortu-theme .group:hover .group-hover\:text-brand-600 {
+  color: var(--ortu-accent-strong);
+}
+
+/* Borders & dividers ----------------------------------------------------- */
+.ortu-theme .border-slate-100,
+.ortu-theme .border-slate-200,
+.ortu-theme .border-slate-200\/60,
+.ortu-theme .border-slate-200\/50,
+.ortu-theme .border-slate-300,
+.ortu-theme .border-surface-100,
+.ortu-theme .border-surface-200,
+.ortu-theme .border-surface-200\/60 {
+  border-color: var(--ortu-border);
+}
+
+.ortu-theme .border-indigo-100,
+.ortu-theme .border-indigo-200,
+.ortu-theme .border-brand-100 {
+  border-color: rgba(197, 165, 114, 0.28);
+}
+
+.ortu-theme .border-emerald-100 {
+  border-color: rgba(134, 201, 172, 0.25);
+}
+
+.ortu-theme .border-amber-100 {
+  border-color: rgba(214, 178, 106, 0.25);
+}
+
+.ortu-theme .border-rose-100 {
+  border-color: rgba(217, 138, 145, 0.25);
+}
+
+.ortu-theme .border-sky-100 {
+  border-color: rgba(130, 183, 216, 0.25);
+}
+
+.ortu-theme .border-orange-100 {
+  border-color: rgba(214, 154, 106, 0.25);
+}
+
+.ortu-theme .border-rose-500 {
+  border-color: #c97982;
+}
+
+.ortu-theme .hover\:border-indigo-100:hover,
+.ortu-theme .hover\:border-indigo-200:hover {
+  border-color: rgba(197, 165, 114, 0.45);
+}
+
+.ortu-theme .hover\:border-emerald-300:hover {
+  border-color: rgba(134, 201, 172, 0.45);
+}
+
+.ortu-theme .hover\:border-amber-300:hover {
+  border-color: rgba(214, 178, 106, 0.45);
+}
+
+.ortu-theme .hover\:border-rose-300:hover {
+  border-color: rgba(217, 138, 145, 0.45);
+}
+
+.ortu-theme .hover\:border-sky-300:hover {
+  border-color: rgba(130, 183, 216, 0.45);
+}
+
+.ortu-theme .hover\:border-orange-300:hover {
+  border-color: rgba(214, 154, 106, 0.45);
+}
+
+.ortu-theme .divide-slate-50 > :not([hidden]) ~ :not([hidden]),
+.ortu-theme .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+.ortu-theme .divide-surface-100 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #29313f;
+}
+
+/* Cards ------------------------------------------------------------------ */
+.ortu-theme .clean-card,
+.ortu-theme .premium-card {
+  background-color: var(--ortu-card);
+  border-color: var(--ortu-border);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.ortu-theme .clean-card:hover,
+.ortu-theme .premium-card:hover {
+  border-color: #3b4659;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* Shadows ---------------------------------------------------------------- */
+.ortu-theme .shadow-sm {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.ortu-theme .shadow-subtle {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.ortu-theme .shadow-clean {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.ortu-theme .shadow-elevated {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.ortu-theme .shadow-lg {
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+}
+
+.ortu-theme .shadow-indigo-100,
+.ortu-theme .shadow-indigo-200 {
+  --tw-shadow-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Forms ------------------------------------------------------------------ */
+.ortu-theme .clean-input {
+  background-color: var(--ortu-elevated);
+  border-color: var(--ortu-border);
+  color: var(--ortu-text);
+}
+
+.ortu-theme .clean-input::placeholder {
+  color: var(--ortu-text-muted);
+}
+
+.ortu-theme .clean-input:focus {
+  border-color: var(--ortu-accent);
+  --tw-ring-color: rgba(197, 165, 114, 0.18);
+}
+
+.ortu-theme .clean-label {
+  color: var(--ortu-text-secondary);
+}
+
+.ortu-theme input,
+.ortu-theme select,
+.ortu-theme textarea {
+  color-scheme: dark;
+}
+
+.ortu-theme input::placeholder,
+.ortu-theme textarea::placeholder {
+  color: var(--ortu-text-muted);
+}
+
+.ortu-theme select option {
+  background-color: var(--ortu-card);
+  color: var(--ortu-text);
+}
+
+.ortu-theme input[type="file"] {
+  color: var(--ortu-text-secondary);
+}
+
+.ortu-theme input[type="file"]::file-selector-button {
+  background-color: var(--ortu-elevated);
+  color: var(--ortu-text);
+  border: 1px solid var(--ortu-border);
+  border-radius: 8px;
+  padding: 6px 12px;
+  margin-right: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ortu-theme input[type="file"]::file-selector-button:hover {
+  background-color: var(--ortu-hover);
+}
+
+.ortu-theme .focus\:border-indigo-500:focus,
+.ortu-theme .focus\:border-brand-500:focus {
+  border-color: var(--ortu-accent);
+}
+
+.ortu-theme .focus\:ring-indigo-500\/10:focus,
+.ortu-theme .focus\:ring-indigo-500\/20:focus,
+.ortu-theme .focus\:ring-brand-500\/10:focus {
+  --tw-ring-color: rgba(197, 165, 114, 0.18);
+}
+
+/* Keep form error states clearly visible on dark surfaces */
+.ortu-theme .focus\:border-rose-500:focus {
+  border-color: #c97982;
+}
+
+.ortu-theme .focus\:ring-rose-500\/20:focus {
+  --tw-ring-color: rgba(217, 138, 145, 0.2);
+}
+
+/* Buttons ---------------------------------------------------------------- */
+.ortu-theme .clean-btn-primary {
+  background-color: var(--ortu-accent);
+  color: #11141b;
+  border: 1px solid rgba(197, 165, 114, 0.6);
+}
+
+.ortu-theme .clean-btn-primary:hover {
+  background-color: var(--ortu-accent-strong);
+}
+
+.ortu-theme .clean-btn-secondary {
+  background-color: var(--ortu-elevated);
+  color: var(--ortu-text);
+  border-color: var(--ortu-border);
+}
+
+.ortu-theme .clean-btn-secondary:hover {
+  background-color: var(--ortu-hover);
+}
+
+.ortu-theme .clean-btn-ghost {
+  color: var(--ortu-text-secondary);
+}
+
+.ortu-theme .clean-btn-ghost:hover {
+  background-color: var(--ortu-elevated);
+  color: var(--ortu-text);
+}
+
+/* Modal & overlays ------------------------------------------------------- */
+.ortu-theme [role="dialog"] {
+  background-color: var(--ortu-card);
+  border-color: var(--ortu-border);
+}
+
+.ortu-theme [role="dialog"] .bg-slate-50 {
+  background-color: #151922;
+}
+
+.ortu-theme [role="dialog"] .border-slate-100 {
+  border-color: var(--ortu-border);
+}
+
+/* Focus ring, selection, scrollbar --------------------------------------- */
+.ortu-theme.ortu-theme :focus-visible {
+  outline: none;
+  --tw-ring-offset-color: var(--ortu-bg);
+  --tw-ring-color: rgba(197, 165, 114, 0.45);
+}
+
+.ortu-theme.ortu-theme .focus-visible\:ring-indigo-500\/30:focus-visible,
+.ortu-theme.ortu-theme .focus-visible\:ring-indigo-500\/40:focus-visible,
+.ortu-theme.ortu-theme .focus-visible\:ring-indigo-500:focus-visible {
+  --tw-ring-color: rgba(197, 165, 114, 0.45);
+}
+
+.ortu-theme ::selection {
+  background-color: rgba(197, 165, 114, 0.3);
+  color: var(--ortu-text);
+}
+
+.ortu-theme ::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.ortu-theme ::-webkit-scrollbar-thumb {
+  background-color: var(--ortu-border);
+  border-color: transparent;
+}
+
+.ortu-theme ::-webkit-scrollbar-thumb:hover {
+  background-color: #3b4659;
+}
+
+/* Browser autofill ------------------------------------------------------- */
+.ortu-theme input:-webkit-autofill,
+.ortu-theme input:-webkit-autofill:hover,
+.ortu-theme input:-webkit-autofill:focus,
+.ortu-theme textarea:-webkit-autofill,
+.ortu-theme select:-webkit-autofill {
+  -webkit-text-fill-color: var(--ortu-text);
+  box-shadow: 0 0 0 1000px var(--ortu-elevated) inset;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/* Small responsive refinements ------------------------------------------- */
+@media (max-width: 640px) {
+  .ortu-theme header {
+    background-color: var(--ortu-sidebar);
+  }
+
+  .ortu-theme .clean-card,
+  .ortu-theme .premium-card {
+    border-radius: 0.75rem;
+  }
+}
+
+/* Dashboard weekly chart -------------------------------------------------
+   The shared dashboard markup relies on percentage heights inside an
+   auto-height flex column, which collapses the bars. This scoped rule only
+   restores the bars for the orang_tua dashboard and leaves other roles
+   completely untouched. */
+.ortu-theme .h-48.flex.items-end > div {
+  height: 100%;
+}
+
+.ortu-theme .h-48.flex.items-end > div > div:first-child {
+  flex: 1 1 auto;
+  height: auto;
+  min-height: 0;
+}
+
+.ortu-theme .h-48.flex.items-end > div .bg-indigo-500 {
+  background-image: linear-gradient(180deg, #d9c093 0%, #b08f5f 100%);
+  background-color: var(--ortu-accent);
+  opacity: 0.92;
+}
+
+/* Native file picker button (e.g. upload bukti bayar) */
+.ortu-theme input[type="file"]::-webkit-file-upload-button {
+  background-color: var(--ortu-elevated);
+  color: var(--ortu-text);
+  border: 1px solid var(--ortu-border);
+  border-radius: 8px;
+  padding: 6px 12px;
+  margin-right: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}

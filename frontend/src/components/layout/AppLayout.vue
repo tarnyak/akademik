@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen bg-slate-50 overflow-hidden">
+  <div class="flex h-screen bg-slate-50 overflow-hidden" :class="{ 'ortu-theme': isOrtuTheme }">
     <!-- Overlay for mobile -->
     <div v-if="isMobileMenuOpen" class="fixed inset-0 bg-slate-900/50 z-40 lg:hidden" @click="isMobileMenuOpen = false"></div>
     
@@ -42,7 +42,14 @@
       <!-- User Profile (Bottom) -->
       <div class="p-4 border-t border-slate-100 bg-slate-50/50">
         <div class="flex items-center gap-3 mb-4">
-          <img :src="authStore.user?.avatar" class="w-9 h-9 rounded-full object-cover border border-slate-200" />
+          <div
+            v-if="isOrtuTheme && !authStore.user?.avatar"
+            class="w-9 h-9 shrink-0 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-xs font-bold text-indigo-600"
+            aria-hidden="true"
+          >
+            {{ authStore.user?.name?.charAt(0)?.toUpperCase() || 'O' }}
+          </div>
+          <img v-else :src="authStore.user?.avatar" class="w-9 h-9 rounded-full object-cover border border-slate-200" />
           <div class="min-w-0">
             <p class="text-xs font-semibold text-slate-900 truncate">{{ authStore.user?.name }}</p>
             <p class="text-[10px] font-medium text-slate-500 uppercase tracking-wider">{{ userRolesLabel }}</p>
@@ -98,16 +105,39 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onBeforeUnmount } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/auth'
 import type { UserRole } from '../../types'
+import '../../assets/ortu-theme.css'
 
 const authStore = useAuthStore()
 const route = useRoute()
 const router = useRouter()
 
 const isMobileMenuOpen = ref(false)
+
+/*
+ * Tema Dark Elegant hanya untuk role `orang_tua`.
+ * Class `.ortu-theme` dipasang pada root layout dan pada <body> agar
+ * modal/toast yang di-teleport ke body tetap ikut bertema.
+ * Role lain tidak pernah menerima class ini sehingga tampilannya tetap.
+ */
+const isOrtuTheme = computed(() => authStore.user?.role === 'orang_tua')
+
+watch(
+  isOrtuTheme,
+  (enabled) => {
+    if (typeof document === 'undefined') return
+    document.body.classList.toggle('ortu-theme', enabled)
+  },
+  { immediate: true }
+)
+
+onBeforeUnmount(() => {
+  if (typeof document === 'undefined') return
+  document.body.classList.remove('ortu-theme')
+})
 
 watch(() => route.path, () => {
   isMobileMenuOpen.value = false
